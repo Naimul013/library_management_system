@@ -1,0 +1,26 @@
+# Created by venv; see https://docs.python.org/3/library/venv.html
+
+
+# Python virtual environment
+venv/
+
+# Django database files
+db.sqlite3
+
+# Django migrations
+**/migrations/*.py
+!**/migrations/__init__.py
+
+# Python bytecode files
+__pycache__/
+*.pyc
+
+# VS Code settings
+.vscode/
+
+# Environment variables file
+.env
+
+library/__pycache__/
+library_management/__pycache__/
+library_management/migrations/__pycache__/
