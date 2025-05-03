@@ -1,0 +1,12 @@
+{% extends "library_management/base.html" %}
+
+{% block content %}
+Sign Up
+
+
+<form method = "POST" enctype="multipart/form-data" action="{% url 'authentication:handlesignup' %}">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type = 'submit'>Register</button>
+</form>
+{% endblock content %}

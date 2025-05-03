@@ -1,0 +1,10 @@
+{% extends "library_management/base.html" %}
+{% block content %}
+login
+
+<form method = 'POST'>
+    {% csrf_token %}
+{{form.as_p}}
+<button type = 'submit'>Login </button>
+</form>
+{% endblock content %}

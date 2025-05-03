@@ -9,7 +9,8 @@ class Profile(models.Model):
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     role = models.CharField(max_length=50, choices=ROLE_CHOICES)
+    profile_picture = models.ImageField( upload_to='profile_pics/', height_field=None, width_field=None, max_length=None,blank=True,default='')
 
     def __str__(self):
-        return f"{self.user.username} - {self.role}"
+        return f"{self.user.first_name} - {self.role}"
     
