@@ -1,0 +1,38 @@
+{% extends "library_management/base.html" %}
+
+{% block content %}
+<h1>Books</h1>
+
+
+<div>
+    {% for bo in books  %}
+    <img src="{{bo.cover_image.url}}" alt="Book cover" height="200" width = '300' padding=3>
+<ul>
+    
+    <li>Title - {{bo.title}}</li>
+    {% for book in books_data %}
+    {% for name,value in book.items %}
+    <li>{{name}} -
+    {% if value.all %}
+    {% for item in value.all %}
+    {{item}} {% if not forloop.last %},{% endif %}
+    {% endfor %}
+    {% else %}
+    {{value}}
+    {% endif %}
+    </li>
+    
+    {% endfor %}
+    
+    
+    {% endfor %}
+    
+    <li>Available Copies - {{bo.available_copies}}</li>
+    <li>Rating - {{bo.rating}}</li>
+    <li>Description - {{bo.description}}</li>
+</ul>
+    {% endfor %}
+</div>
+
+
+{% endblock content %}

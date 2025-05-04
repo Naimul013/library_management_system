@@ -48,7 +48,7 @@ class Publisher(models.Model):
         return self.name
 
 class Review(models.Model):
-    book = models.ForeignKey('Book', on_delete=models.CASCADE, related_name='review')
+    book = models.ForeignKey('Book', on_delete=models.CASCADE, related_name='reviews')
     user = models.ForeignKey('auth.user', on_delete=models.CASCADE)
     rating = models.DecimalField( max_digits=2, decimal_places=1)
     review_text = models.TextField(blank=True)

@@ -1,0 +1,15 @@
+{% extends "library_management/base.html" %}
+
+
+{% block content %}
+<h1>Author's Name: </h1>
+
+{% for author in authors %}
+<ul>
+    <li>{{author.first_name}} {{author.last_name}}</li> <br>
+    {{author.email}} <br>
+    {{author.bio}}
+   
+
+{% endfor %}
+{% endblock content %}

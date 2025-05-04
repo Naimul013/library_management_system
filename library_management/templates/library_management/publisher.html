@@ -1,0 +1,15 @@
+{% extends "library_management/base.html" %}
+
+{% block content %}
+<h1>Publisher</h1>
+
+{% for publisher in publishers %}
+<ol><li>{{publisher.name}}</li><br>
+{{publisher.address}}<br>
+{{publisher.email}}<br>
+<a href='{{publisher.website}}'>Weblink</a>
+</ol>
+
+{% endfor %}
+
+{% endblock content %}

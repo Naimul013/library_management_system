@@ -2,10 +2,15 @@ from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from .models import Profile
 from django.dispatch import receiver
+from .models import *
 
 @receiver(post_save,sender=User)
 def create_or_update_user_profile(sender, instance, created,**kwargs):
     if created:
         Profile.objects.create(user=instance)
     instance.profile.save()
+
+@receiver(post_save,sender=Review)
+def update_review(sender,instance,**kwargs):
+    instance.book.update_rating()
 

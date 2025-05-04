@@ -13,6 +13,10 @@
 <div>
     <ul>
         <li><a href="{% url "home" %}">Home</a></li>
+        <li><a href="{% url "books" %}">Books</a></li>
+
+        <li><a href="{% url "author" %}">Author</a></li>
+        <li><a href="{% url "publisher" %}">Publisher</a></li>
         {% if request.user.is_authenticated %}
         <li><a href="{% url "authentication:handlelogout" %}">Logout</a></li>
         {% else %}
