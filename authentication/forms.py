@@ -1,16 +1,18 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth.models import User
-
+from phonenumber_field.formfields import PhoneNumberField
 
 class ProfileForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=True)
     last_name = forms.CharField(max_length=30, required=True)
     profile_picture = forms.ImageField(required=True)
+    phone_number = PhoneNumberField(region='BD')
+    address = forms.CharField(max_length=100,required=True)
 
     class Meta:
         model = User
-        fields = ['first_name','last_name','email','password1','password2','profile_picture']
+        fields = ['first_name','last_name','email','password1','password2','phone_number','address','profile_picture']
 
     
     def clean_email(self):

@@ -14,8 +14,12 @@ def handlesignup(request):
             
             if 'profile_picture' in request.FILES:
                 user.profile.profile_picture = request.FILES['profile_picture']
+
+            user.profile.role = 'member'
+            user.profile.address = request.POST['address']
+            user.profile.phone_number = request.POST['phone_number']
             user.profile.save()
-            messages.success('Registration success')
+            messages.success(request,'Registration success')
             return redirect('home')
         
     else:
