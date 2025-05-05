@@ -30,7 +30,7 @@ class ProfileForm(UserCreationForm):
         return user
     
 class LoginForm(AuthenticationForm):
-    username = forms.CharField( max_length=20, required=False)
+    username = forms.CharField( max_length=50, required=False)
     password = forms.CharField(required=True)
     class Meta:
         model = User

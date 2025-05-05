@@ -122,7 +122,12 @@ class BorrowBook(models.Model):
             self.book.save()
             self.save()
         
-    
+    def clean(self):
+        if BorrowBook.objects.filter(member= self.member, book = self.book,returned = False).exclude(id = self.id).exists():
+            raise ValidationError('You have already borrowed this book.')
+
+
+
     def save(self,*args, **kwargs):
         if not self.pk:  #on creation only
             if self.book.available_copies < 1:

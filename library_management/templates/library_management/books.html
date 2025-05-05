@@ -31,8 +31,10 @@
     <li>Rating - {{bo.rating}}</li>
     <li>Description - {{bo.description}}</li>
 </ul>
+<a href="{% url "borrow_book" bo.isbn_code %}" >Borrow </a>
     {% endfor %}
 </div>
+
 
 
 {% endblock content %}

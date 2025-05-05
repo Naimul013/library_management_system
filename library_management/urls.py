@@ -7,5 +7,6 @@ urlpatterns = [
     path('author/', views.author, name='author'),
     path('publisher/', views.publisher, name='publisher'),
     path('books/', views.books, name='books'),
+    path('books/<str:isbn_code>/', views.borrow_book, name='borrow_book'),
 
 ]

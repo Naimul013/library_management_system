@@ -1,5 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
+from django.contrib import messages
 from .models import *
+from .forms import *
 # Create your views here.
 def home(request):
     return render(request,'library_management/home.html')
@@ -37,3 +39,42 @@ def publisher(request):
     publisher = Publisher.objects.all()
     context = {'publishers':publisher}
     return render(request,'library_management/publisher.html',context)
+
+
+def borrow_book(request,isbn_code):
+    book = Book.objects.get(isbn_code= isbn_code)
+    
+    if request.method == "POST":
+        form = BorrowBookForm(request.POST)
+        form.instance.member = request.user
+        form.instance.book = book
+        if form.is_valid():
+            try:
+                borrow = form.save(commit = False)
+                
+                
+                borrow.borrow_date = date.today()
+                borrow.due_date = borrow.borrow_date + timedelta(days= borrow.allowed_date)
+                try:
+                    borrow.full_clean()
+
+                    borrow.save()
+                    messages.success(request,"You borrowed the book")
+                    return redirect('books')
+                except ValidationError as e:
+                    messages.error(request,str(e))
+
+            except ValidationError as e:
+                messages.error(request,str(e))
+                return redirect('books')
+
+        
+    else:
+        form = BorrowBookForm()
+
+    context = {'books':book, 'forms':form}
+    return render(request,'library_management/borrow.html',context)
+
+
+
+            
