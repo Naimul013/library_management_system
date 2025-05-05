@@ -1,0 +1,42 @@
+{% extends "library_management/base.html" %}
+
+{% block content %}
+<div>
+    <h1>Member dashboard</h1>
+    <h2>Member Profile</h2>
+    <img src="{{profile.profile_picture.url}}" alt="" height="300" width="400"> <br>
+<ul><li>Name: {{profile.user.first_name}} {{profile.user.last_name}}</li></ul>
+<ul><li>Phone Number: {{profile.phone_number}} </li></ul>
+<ul><li>Address: {{profile.address}} </li></ul>
+<ul><li>Member since: {{profile.created_at}} </li></ul>
+
+    
+
+</div>
+
+    <div>
+        <h2>Currently borrowed:</h2><br>
+        {% if current_borrow %}
+        {% for i in current_borrow %}
+        <ul><li>{{i}}</li></ul>
+        {% endfor %}
+        {% else %}
+        No books in borrowed.
+        {% endif %}
+    </div>
+<br>
+
+<div>
+    <h2>Borrowing History</h2><br>
+    {% for i in borrowing_history %}
+   <p> {{forloop.counter}}. {{i.book.title}} by {{i.book.author}}</p>
+   <ul>
+    <li>ISBN CODE - {{i.book.isbn_code}}</li>
+    <li>Issueing Date - {{i.borrow_date}}</li>
+    <li>Return Date - {{i.return_date}}</li>
+
+</ul>
+    {% endfor %}
+</div>
+
+{% endblock content %}

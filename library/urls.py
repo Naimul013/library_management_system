@@ -23,5 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("library_management.urls")),
     path('auth/', include("authentication.urls",namespace='authentication')),
+    path('memberdashboard/', include("member_dashboard.urls",namespace='member_dashboard')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
