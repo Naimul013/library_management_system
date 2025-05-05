@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib import messages
 from .models import *
 from .forms import *
@@ -66,15 +66,20 @@ def borrow_book(request,isbn_code):
 
             except ValidationError as e:
                 messages.error(request,str(e))
-                return redirect('books')
-
-        
+                return redirect('books')   
     else:
         form = BorrowBookForm()
 
     context = {'books':book, 'forms':form}
     return render(request,'library_management/borrow.html',context)
 
+def return_book(request, isbn_code):
+    borrow = get_object_or_404(BorrowBook,member= request.user,book__isbn_code= isbn_code,returned = False)
+    borrow.mark_as_returned()
+    
+    messages.success(request,"The book has been returned")
+    return redirect('books')
 
+ 
 
             

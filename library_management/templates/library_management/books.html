@@ -32,6 +32,7 @@
     <li>Description - {{bo.description}}</li>
 </ul>
 <a href="{% url "borrow_book" bo.isbn_code %}" >Borrow </a>
+<a href="{% url "return_book" bo.isbn_code %}" >Return </a>
     {% endfor %}
 </div>
 
