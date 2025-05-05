@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from phonenumber_field.modelfields import PhoneNumberField
 from django.utils import timezone
+from django.core.exceptions import ValidationError
+from datetime import timedelta, date
 # Create your models here.
 class Profile(models.Model):
     ROLE_CHOICES = [
@@ -95,6 +97,70 @@ class Book(models.Model):
         if 0<= num <= self.total_copies:
             self.available_copies = num
             self.save()
+
+
+class BorrowBook(models.Model):
+    member = models.ForeignKey(User, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    borrow_date = models.DateField(auto_now_add=True)
+    allowed_date = models.IntegerField(default=14)
+    due_date = models.DateField(blank=True,null=True)
+    return_date = models.DateField(blank=True, null=True)
+    returned = models.BooleanField(default=False)
+
+    def is_overdue(self):
+        return not self.returned and self.due_date < date.today()
+    
+    def mark_as_returned(self):
+
+        
+        if not self.returned:
+            
+            self.returned = True
+            self.return_date = date.today()
+            self.book.available_copies += 1
+            self.book.save()
+            self.save()
+        
+    
+    def save(self,*args, **kwargs):
+        if not self.pk:  #on creation only
+            if self.book.available_copies < 1:
+                raise ValidationError('No available copies to borrow')
+            if self.allowed_date > 30:
+                raise ValidationError('You are not allowed to borrow this book for more than 30 days.')
+            self.borrow_date = date.today()
+            self.due_date = self.borrow_date + timedelta(days=self.allowed_date)
+            self.book.available_copies -= 1
+            self.book.save()
+        
+        if self.returned and not self.return_date:
+            # If the book is returned, set the return date to today's date
+            self.return_date = date.today()
+
+            # Increment available copies of the book
+            self.book.available_copies += 1
+            self.book.save()  # Save the book with updated available copies
+
+
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        # Before deleting the Borrow record, increment the available copies of the book
+        if self.book:
+            if not self.returned:
+                self.book.available_copies += 1
+                self.book.save()  # Save the book with updated available copies
+        
+        # Call the parent delete method to delete the Borrow record
+        super().delete(*args, **kwargs)
+    
+
+    def __str__(self):
+        return f"{self.member.username} borrowed {self.book.title}"
+    
+
+
         
 
     
