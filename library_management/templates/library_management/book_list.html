@@ -1,0 +1,49 @@
+{% extends "library_management/base.html" %}
+{% block content %}
+<form method="get">
+    <input type="text" name="q" placeholder="Search books...">
+    <input type="text" name="category" placeholder="Category...">
+    <button type="submit">Search</button>
+</form>
+{% if page_obj %}
+<div>
+{% for books in page_obj %}
+   <img src="{{books.cover_image.url}}" height=300, width=400>
+        <li><h3>{{ books.title }}</h3></li>
+        {% for book in books_data %}
+    {% for name,value in book.items %}
+    <li>{{name}} -
+    {% if value.all %}
+    {% for item in value.all %}
+    {{item}} {% if not forloop.last %},{% endif %}
+    {% endfor %}
+    {% else %}
+    {{value}}
+    {% endif %}
+    </li>
+    
+    {% endfor %}
+    
+{% endfor %}
+<li>Available Copies - {{books.available_copies}}</li>
+    <li>Rating - {{books.rating}}</li>
+    <li>Description - {{books.description}}</li>
+    <a href="{% url "borrow_book" books.isbn_code %}" >Borrow </a>
+<a href="{% url "return_book" books.isbn_code %}" >Return </a>
+{% endfor %}
+</div>
+{% else %}
+<p>No mathched
+    {% endif %}
+<div>
+    {% if page_obj.has_previous %}
+        <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}page={{ page_obj.previous_page_number }}">Previous</a>
+    {% endif %}
+
+    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+
+    {% if page_obj.has_next %}
+        <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}page={{ page_obj.next_page_number }}">Next</a>
+    {% endif %}
+</div>
+{% endblock content %}

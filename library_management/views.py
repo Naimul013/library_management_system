@@ -2,6 +2,8 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib import messages
 from .models import *
 from .forms import *
+from django.core.paginator import Paginator
+from django.db.models import Q
 # Create your views here.
 def home(request):
     return render(request,'library_management/home.html')
@@ -17,7 +19,7 @@ def books(request):
                 value = getattr(book,field.name)
                 data[field.name] = value
 
-        all_books_data.append(data)
+        
     
         for field in Book._meta.many_to_many:
             if isinstance(field,models.ManyToManyField):
@@ -81,5 +83,45 @@ def return_book(request, isbn_code):
     return redirect('books')
 
  
+def filtering(request):
+    query = request.GET.get('q','')
+    category = request.GET.get('category','')
+    books = Book.objects.all()
+    
+    if query:
+        books = books.filter(
+            Q(title__icontains=query) | Q(author__first_name__icontains=query)| Q(author__last_name__icontains=query)| Q(isbn_code__icontains= query)
+        )
+    if category:
+        books = books.filter(category__name__icontains= category)
 
+    paginator = Paginator(books,10)
+    page_number = request.GET.get('page')
+    if page_number is None:
+        page_number = 1  # Default to the first page if page is not provided
+    
+    try:
+        page_obj = paginator.get_page(page_number)  # Get the current page object
+    except Exception as e:
+        # If there is any error, you can log it or handle it appropriately
+        page_obj = Paginator.get_page(1)
+
+    all_books_data = []
+    for book in page_obj:
+        data ={}
+        for field in Book._meta.fields:
+            if isinstance(field,models.ForeignKey):
+                value = getattr(book,field.name)
+                data[field.name] = value
+
+        
+    
+        for field in Book._meta.many_to_many:
+            if isinstance(field,models.ManyToManyField):
+                value = getattr(book,field.name).all()
+                data[field.name] = value
+        all_books_data.append(data)
+    
+    context = {'page_obj':page_obj,"books_data":all_books_data}
+    return render(request,'library_management/book_list.html',context)
             
