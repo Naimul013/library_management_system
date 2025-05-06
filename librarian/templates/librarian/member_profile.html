@@ -1,0 +1,9 @@
+{% extends "librarian/dashboard.html" %}
+{% block content %}
+Member profile
+
+{% for i in profile %}
+<a href ="{% url "librarian:member_details" i.user.id %}">{{i.user.first_name}} {{i.user.last_name}} {{i.role}} {{i.created_at}}</a><br>
+{% endfor %}
+
+{% endblock content %}

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'authentication',
     'phonenumber_field',
     'member_dashboard',
+    'librarian',
 ]
 
 MIDDLEWARE = [

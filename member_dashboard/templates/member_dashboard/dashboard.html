@@ -3,6 +3,11 @@
 {% block content %}
 <div>
     <h1>Member dashboard</h1>
+    {% if profile.role == 'librarian'%}
+    <h3><a href= '{% url "librarian:dashboard" %}' >Change to librarian dashboard?</a></h3>
+{% elif profile.role == 'admin' %}
+<h3><a href= '{% url "librarian:dashboard" %}' >Change to admin dashboard?</a></h3>
+    {% endif %}
     <h2>Member Profile</h2>
     <img src="{{profile.profile_picture.url}}" alt="" height="300" width="400"> <br>
 <ul><li>Name: {{profile.user.first_name}} {{profile.user.last_name}}</li></ul>
@@ -23,7 +28,7 @@
         {% else %}
         No books in borrowed.
         {% endif %}
-    </div>
+    </div> 
 <br>
 
 <div>

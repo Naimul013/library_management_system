@@ -1,0 +1,34 @@
+{% extends "librarian/dashboard.html" %}
+{% block content %}
+
+<h1>Showing borrowing Record of <strong>{{user.first_name}} {{user.last_name}} </strong>, email: {{user.username}}
+<h1>Currently Borrowed Book:</h1>
+
+{% for i in borrow %}
+{{forloop.counter}}.
+Book name: {{i.book.title}} <br>
+Author Name:{% for author in i.book.author.all %}{{author}}<br>{% endfor %}
+
+
+ISBN_code: {{i.book.isbn_code}}<br>
+Issueing Date: {{i.borrow_date}}<br>
+Due Date: {{i.due_date}}<br>
+{% endfor %}
+
+<h1>Previously Borrowed</h1>
+{% if borrowed %}
+{% for i in borrowed %}
+{{forloop.counter}}.
+Book name: {{i.book.title}} <br>
+Author Name:{% for author in i.book.author.all %}{{author}}<br>{% endfor %}
+
+
+ISBN_code: {{i.book.isbn_code}}<br>
+Issueing Date: {{i.borrow_date}}<br>
+Due Date: {{i.due_date}}<br>
+{% endfor %}
+{% else %}
+<p>No previous record.</p>
+{% endif %}
+
+{% endblock content %}

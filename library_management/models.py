@@ -108,8 +108,7 @@ class BorrowBook(models.Model):
     return_date = models.DateField(blank=True, null=True)
     returned = models.BooleanField(default=False)
 
-    def is_overdue(self):
-        return not self.returned and self.due_date < date.today()
+    
     
     def mark_as_returned(self):
 
@@ -163,6 +162,19 @@ class BorrowBook(models.Model):
 
     def __str__(self):
         return f"{self.member.username} borrowed {self.book.title}"
+    
+    @property
+    def is_overdue(self):
+        return not self.returned and self.due_date < date.today()
+    @property
+    def overdue_days(self):
+        if self.is_overdue:
+            overdue = (date.today()-self.due_date).days
+            return overdue
+        return 0
+    @property
+    def fine(self):
+        return self.overdue_days * 100
     
 
 

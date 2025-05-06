@@ -24,5 +24,6 @@ urlpatterns = [
     path('', include("library_management.urls")),
     path('auth/', include("authentication.urls",namespace='authentication')),
     path('memberdashboard/', include("member_dashboard.urls",namespace='member_dashboard')),
+    path('librarian/', include("librarian.urls",namespace='librarian')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
