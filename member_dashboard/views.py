@@ -6,6 +6,7 @@ def member_dashboard(request):
     profile = Profile.objects.get(user= member)
     current_borrow = BorrowBook.objects.filter(member = member,returned = False)
     borrowing_history = BorrowBook.objects.filter(member= member, returned = True)
-
-    context = {'profile':profile,'current_borrow':current_borrow,'borrowing_history':borrowing_history}
+    fine = sum([i.fine for i in borrowing_history])
+    print(fine)
+    context = {'profile':profile,'current_borrow':current_borrow,'borrowing_history':borrowing_history,'fine':fine}
     return render(request,"member_dashboard/dashboard.html",context)

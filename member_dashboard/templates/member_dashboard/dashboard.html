@@ -14,6 +14,7 @@
 <ul><li>Phone Number: {{profile.phone_number}} </li></ul>
 <ul><li>Address: {{profile.address}} </li></ul>
 <ul><li>Member since: {{profile.created_at}} </li></ul>
+<li>Total fine to pay: {{fine}}</li>
 
     
 
@@ -39,6 +40,8 @@
     <li>ISBN CODE - {{i.book.isbn_code}}</li>
     <li>Issueing Date - {{i.borrow_date}}</li>
     <li>Return Date - {{i.return_date}}</li>
+    <li>Overdue - {{i.overdue_days}}</li>
+    <li>Fine - {{i.fine}}$</li>
 
 </ul>
     {% endfor %}

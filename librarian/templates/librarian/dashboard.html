@@ -9,11 +9,15 @@
 {% endif %}
 <h5>Hello, {{profile.user.last_name}}</h5>
 <ul>
-    <li><a href="#">Add Book</a>Add Book</li>
+    <li><a href="{% url "librarian:adding_book" %}">Add Book</a>Add Book</li>
+    
     <li><a href="#">Remove a user</a></li>
     
     <li><a href="#">Borrowed Book Record</a></li>
     <li><a href="{% url "librarian:member_profile" %}">Member profile</a></li>
+    {% if profile.role == 'admin' %}
+    <li><a href="{% url "librarian:librarian_profile" %}">Librarian profile</a></li>
+    {% endif %}
 </ul>
 {% endblock content %}
 
